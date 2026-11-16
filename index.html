@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sapo do Tempo - Painel Meteorológico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sky-background" aria-hidden="true">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <main class="app-container">
+        <header class="app-header">
+            <div class="logo-badge" aria-hidden="true">
+                <!-- Mini Sapinho Fofo SVG no Cabeçalho -->
+                <svg viewBox="0 0 120 110" class="cute-frog-svg mini">
+                    <circle cx="34" cy="32" r="18" fill="#8cb342" stroke="#4a5d23" stroke-width="4"/>
+                    <circle cx="86" cy="32" r="18" fill="#8cb342" stroke="#4a5d23" stroke-width="4"/>
+                    <ellipse cx="60" cy="64" rx="46" ry="36" fill="#a3c954" stroke="#4a5d23" stroke-width="4"/>
+                    <ellipse cx="60" cy="68" rx="40" ry="28" fill="#b8dc6f"/>
+                    <!-- Olhos grandes -->
+                    <circle cx="34" cy="32" r="12" fill="#ffffff"/>
+                    <circle cx="35" cy="31" r="8.5" fill="#463f2a"/>
+                    <circle cx="32" cy="28" r="3" fill="#ffffff"/>
+                    <circle cx="86" cy="32" r="12" fill="#ffffff"/>
+                    <circle cx="85" cy="31" r="8.5" fill="#463f2a"/>
+                    <circle cx="82" cy="28" r="3" fill="#ffffff"/>
+                    <!-- Bochechas rosadas -->
+                    <ellipse cx="28" cy="62" rx="9" ry="5.5" fill="#e89974" opacity="0.75"/>
+                    <ellipse cx="92" cy="62" rx="9" ry="5.5" fill="#e89974" opacity="0.75"/>
+                    <!-- Sorriso -->
+                    <path d="M 52 54 Q 60 62 68 54" fill="none" stroke="#4a5d23" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div>
+                <h1>Sapo do Tempo</h1>
+                <p class="subtitle">Companheiro de meteorologia em tempo real</p>
+            </div>
+        </header>
+
+        <section class="search-section" aria-label="Busca de cidade">
+            <form id="search-form" class="search-box" novalidate>
+                <input 
+                    type="text" 
+                    id="city-input" 
+                    placeholder="Digite o nome da cidade (ex: Pederneiras, Curitiba)..." 
+                    autocomplete="off"
+                    aria-label="Nome da cidade"
+                >
+                <button type="submit" id="search-btn">Buscar</button>
+            </form>
+        </section>
+
+        <section id="message-area" class="message-area hidden" role="status" aria-live="polite"></section>
+
+        <section id="weather-panel" class="weather-panel hidden" aria-label="Resultados do clima">
+            <div class="location-header">
+                <h2 id="city-name">--</h2>
+                <p id="region-country">--</p>
+            </div>
+
+            <div class="main-weather">
+                <div class="weather-visual">
+                    <!-- Ilustração Principal do Sapinho Fofo -->
+                    <div class="frog-illustration-wrapper" id="frog-mascot">
+                        <svg viewBox="0 0 160 140" class="cute-frog-svg main-frog" aria-hidden="true">
+                            <!-- Brilho suave atrás do sapo -->
+                            <circle cx="80" cy="75" r="58" fill="#fef3d6" opacity="0.85"/>
+                            
+                            <!-- Corpinho -->
+                            <path d="M 48 102 Q 42 128 46 135 L 114 135 Q 118 128 112 102 Z" fill="#8cb342" stroke="#4a5d23" stroke-width="3.5"/>
+                            <ellipse cx="80" cy="122" rx="22" ry="13" fill="#e5e89e"/>
+
+                            <!-- Órbita dos olhos -->
+                            <circle cx="48" cy="44" r="21" fill="#9bc24c" stroke="#4a5d23" stroke-width="3.5"/>
+                            <circle cx="112" cy="44" r="21" fill="#9bc24c" stroke="#4a5d23" stroke-width="3.5"/>
+
+                            <!-- Cabeça fofa -->
+                            <ellipse cx="80" cy="78" rx="54" ry="40" fill="#a8cf59" stroke="#4a5d23" stroke-width="3.5"/>
+                            <ellipse cx="80" cy="83" rx="46" ry="31" fill="#bce072"/>
+
+                            <!-- Olhos grandes e brilhantes -->
+                            <circle cx="48" cy="44" r="14.5" fill="#ffffff"/>
+                            <circle cx="50" cy="42" r="10.5" fill="#463f2a"/>
+                            <circle cx="46" cy="38" r="3.8" fill="#ffffff"/>
+                            <circle cx="53" cy="46" r="1.8" fill="#ffffff"/>
+
+                            <circle cx="112" cy="44" r="14.5" fill="#ffffff"/>
+                            <circle cx="110" cy="42" r="10.5" fill="#463f2a"/>
+                            <circle cx="106" cy="38" r="3.8" fill="#ffffff"/>
+                            <circle cx="113" cy="46" r="1.8" fill="#ffffff"/>
+
+                            <!-- Bochechas rosadas -->
+                            <ellipse cx="42" cy="76" rx="11" ry="6.5" fill="#e8926b" opacity="0.72"/>
+                            <ellipse cx="118" cy="76" rx="11" ry="6.5" fill="#e8926b" opacity="0.72"/>
+
+                            <!-- Sorriso meigo -->
+                            <path d="M 71 67 Q 80 76 89 67" fill="none" stroke="#4a5d23" stroke-width="3.5" stroke-linecap="round"/>
+
+                            <!-- Acessório dinâmico (Óculos de sol, guarda-chuva ou cachecol) -->
+                            <g id="frog-accessory"></g>
+                        </svg>
+                    </div>
+                    <div class="condition-badge">
+                        <span id="weather-icon" aria-hidden="true">☀️</span>
+                        <span id="weather-condition">--</span>
+                    </div>
+                </div>
+
+                <div class="temperature-box">
+                    <span class="temp-label">Agora</span>
+                    <span id="current-temp">--°C</span>
+                </div>
+            </div>
+
+            <div class="weather-details">
+                <div class="detail-card">
+                    <span class="detail-icon">🌡️</span>
+                    <span class="detail-label">Sensação Térmica</span>
+                    <strong id="feels-like">--°C</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-icon">💧</span>
+                    <span class="detail-label">Umidade do Ar</span>
+                    <strong id="humidity">--%</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span class="detail-icon">💨</span>
+                    <span class="detail-label">Vento</span>
+                    <strong id="wind-speed">-- km/h</strong>
+                </div>
+            </div>
+        </section>
+
+        <footer class="landscape-footer" aria-hidden="true">
+            <div class="hill hill-back"></div>
+            <div class="hill hill-front"></div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
